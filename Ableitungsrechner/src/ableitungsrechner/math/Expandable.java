@@ -5,6 +5,8 @@
 package ableitungsrechner.math;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,13 +14,13 @@ import java.util.ArrayList;
  */
 public abstract class Expandable {
     
-    public ArrayList<Ableitbar> members = new ArrayList();
+    public ArrayList<Ableitbar> elements = new ArrayList();
     boolean modifiedSinceConsolidation = false;
 
     public abstract void consolidate();
 
     public void add(Ableitbar a) {
         modifiedSinceConsolidation = true;
-        members.add(a);
+        elements.add(a);
     }
 }

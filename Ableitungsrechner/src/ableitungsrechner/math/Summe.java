@@ -4,7 +4,6 @@
  */
 package ableitungsrechner.math;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +21,7 @@ public class Summe extends Expandable implements Ableitbar {
 
         Summe ableitung = new Summe();
 
-        for (Ableitbar thisMember : members) {
+        for (Ableitbar thisMember : elements) {
             ableitung.add(thisMember.getAbleitung());
         }
 
@@ -30,45 +29,58 @@ public class Summe extends Expandable implements Ableitbar {
         return ableitung;
     }
 
-    public void add(Produkt produkt) {
+    @Override
+    public void add(Ableitbar a) {
         modifiedSinceConsolidation = true;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-        public void add(Summe summe) {
-        modifiedSinceConsolidation = true;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        elements.add(a);
     }
 
     @Override
-    public void consolidate() {
-        boolean runAgain = true;
-        while (runAgain) {
-            runAgain = false;
-            for (int i = 0; i < members.size() - 1; i++) {
-                for (int j = i + 1; i < members.size(); j++) {
+            public void consolidate() {
+
+            for (int i = 0; i < elements.size() - 1; i++) {
+                for (int j = i + 1; i < elements.size(); j++) {
                     
-                    //If the two members are of the same type, sum them
-                    if(members.get(i).getClass()
-                            .equals(members.get(j).getClass())) {
-                        Ableitbar a = members.get(i);
-                        members.remove(a);
-                        Ableitbar b = members.get(j);
-                        members.remove(b);
+                    //If the two elements are of the same type, sum/multiply/whatever them
+                    if(elements.get(i).getClass()
+                            .equals(elements.get(j).getClass())) {
+                        Ableitbar a = elements.get(i);
+                        elements.remove(a);
+                        Ableitbar b = elements.get(j);
+                        elements.remove(b);
                         
-                        members.add(a.sumWith(b));
+                        try {
+                            elements.add(a.sumWith(b));   
+                        } catch (CloneNotSupportedException ex) {
+                            Logger.getLogger(Summe.class.getName()).log(Level.SEVERE, null, ex);
+                            elements.add(a);
+                            elements.add(b);
+                        }
+                    }
+                    if(elements.size()>1)    {
+                    //restart the loop
+                    i = 0;
+                    j = 1;
                     }
                 }
             }
-        }
         modifiedSinceConsolidation = false;
     }
-
     @Override
     public Ableitbar sumWith(Ableitbar b) throws CloneNotSupportedException{
         Summe summe;
             summe = (Summe) this.clone();
         summe.add(b);
+        summe.consolidate();
+        //If there's only one element left, return that instead
+        if(summe.elements.size()==1) {
+            //...except if it's the number zero
+            if(summe.elements.get(0) instanceof Zahl) {
+                Zahl zahl = (Zahl) summe.elements.get(0);
+                if(zahl.value==0) return null;
+            }
+            return summe.elements.get(0);
+        }
         
         return summe;
     }
