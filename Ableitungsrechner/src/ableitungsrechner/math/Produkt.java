@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  *
  * @author Carl
  */
-public class Produkt extends Expandable implements Ableitbar {
+public class Produkt extends Expandable {
 
     @Override
     public Ableitbar getAbleitung() {
@@ -22,20 +22,20 @@ public class Produkt extends Expandable implements Ableitbar {
     public void consolidate() {
         //Check if an element has the value zero, in that case set elements list to Zahl(0)
         for (int i = 0; i < elements.size(); i++) {
-            if(elements.get(i) instanceof Zahl) {
+            if (elements.get(i) instanceof Zahl) {
                 Zahl zahl = (Zahl) elements.get(i);
-                if(zahl.value == 0) {
+                if (zahl.value == 0) {
                     elements.clear();
                     elements.add(new Zahl(0));
                 }
             }
         }
         //Check if a Variable can be added to a Potenz
-                        //TODO
+        //TODO
         //Check if elements can be consolidated
         for (int i = 0; i < elements.size() - 1; i++) {
             for (int j = i + 1; i < elements.size(); j++) {
-                        
+
                 //If the two elements are of the same type, multiply them
                 if (elements.get(i).getClass()
                         .equals(elements.get(j).getClass())) {
@@ -49,14 +49,15 @@ public class Produkt extends Expandable implements Ableitbar {
                         elements.add(a.multiplyWith(b));
                     } catch (CloneNotSupportedException ex) {
                         Logger.getLogger(Summe.class.getName()).log(Level.SEVERE, null, ex);
+                        //Put them back in the list
                         elements.add(a);
                         elements.add(b);
                     }
-                }
-                if (elements.size() > 1) {
-                    //restart the loop
-                    i = 0;
-                    j = 1;
+                    if (elements.size() > 1) {
+                        //restart the loop
+                        i = 0;
+                        j = 1;
+                    }
                 }
             }
         }
@@ -64,21 +65,10 @@ public class Produkt extends Expandable implements Ableitbar {
 
     }
 
-    @Override
-    public Ableitbar sumWith(Ableitbar b) throws CloneNotSupportedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Ableitbar multiplyWith(Ableitbar b) throws CloneNotSupportedException {
-        Produkt produkt = (Produkt) this.clone();
-        produkt.multiplyWith(b);
-        produkt.consolidate();
-        //If the product contains a single item, return that
-        if (produkt.elements.size() == 1) {
-            return produkt.elements.get(0);
-        }
-        return produkt;
-    }
-
+    public Produkt multiplyWith(Produkt b) throws CloneNotSupportedException   {
+                Produkt produkt = (Produkt) this.clone();
+                produkt.elements.addAll(b.elements);
+                produkt.consolidate();
+                return produkt;
+            }
 }

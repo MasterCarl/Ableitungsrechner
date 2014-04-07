@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author Carl
  */
-public class Term extends Expandable implements Ableitbar{
+public class Term extends Expandable{
 
     ArrayList<Ableitbar> members = new ArrayList();
     

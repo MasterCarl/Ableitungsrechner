@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  *
  * @author Carl
  */
-public class Summe extends Expandable implements Ableitbar {
+public class Summe extends Expandable{
 
     @Override
     public Ableitbar getAbleitung() {
@@ -66,27 +66,14 @@ public class Summe extends Expandable implements Ableitbar {
             }
         modifiedSinceConsolidation = false;
     }
-    @Override
-    public Ableitbar sumWith(Ableitbar b) throws CloneNotSupportedException{
-        Summe summe;
-            summe = (Summe) this.clone();
-        summe.add(b);
-        summe.consolidate();
-        //If there's only one element left, return that instead
-        if(summe.elements.size()==1) {
-            //...except if it's the number zero
-            if(summe.elements.get(0) instanceof Zahl) {
-                Zahl zahl = (Zahl) summe.elements.get(0);
-                if(zahl.value==0) return null;
+            public Summe sumWith(Summe b) throws CloneNotSupportedException   {
+                Summe summe = (Summe) this.clone();
+                summe.elements.addAll(b.elements);
+                summe.consolidate();
+                return summe;
             }
-            return summe.elements.get(0);
-        }
-        
-        return summe;
-    }
-
-    @Override
-    public Ableitbar multiplyWith(Ableitbar b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            public Summe multiplyWith(Summe b) throws CloneNotSupportedException   {
+                //Summe summe = (Summe) this.clone();
+                throw new UnsupportedOperationException("Not yet supported.");
+            }
 }

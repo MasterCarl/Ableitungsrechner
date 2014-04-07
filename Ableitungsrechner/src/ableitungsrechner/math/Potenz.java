@@ -8,6 +8,6 @@ package ableitungsrechner.math;
  *
  * @author Carl
  */
-public class Potenz extends Expandable implements Ableitbar{
+public abstract class Potenz extends Expandable{
     
 }

@@ -8,18 +8,24 @@ package ableitungsrechner.math;
  *
  * @author Carl
  */
-public class Zahl implements Ableitbar{
+public class Zahl extends Ableitbar{
 
     double value;
 
     public Zahl(){};
-    public Zahl(int value) {
+    public Zahl(double value) {
         this.value = value;
     }
     
     @Override
     public Ableitbar getAbleitung() {
         return new Zahl(0);
+    }
+    public Zahl sumWith(Zahl b) {
+        return new Zahl(this.value + b.value);
+    }
+    public Zahl multiplyWith(Zahl b) {
+        return new Zahl(this.value * b.value);
     }
     
 }

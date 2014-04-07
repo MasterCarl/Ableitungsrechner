@@ -21,7 +21,7 @@ public class Ableitungsrechner {
             Summe summe = new Summe();
                 Produkt produkt1 = new Produkt();
                 produkt1.add(new Zahl(2));
-                produkt1.add(new Potenz());
+                //produkt1.add(new Potenz());
             summe.add(produkt1);
         term.add(summe);
         

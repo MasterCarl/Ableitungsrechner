@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Carl
  */
-public abstract class Expandable {
+public abstract class Expandable extends Ableitbar{
     
     public ArrayList<Ableitbar> elements = new ArrayList();
     boolean modifiedSinceConsolidation = false;
